@@ -1,85 +1,52 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.util.StringTokenizer;
-import org.apache.commons.io.IOUtils;
+import java.util.Arrays;
 
-public class PgmImage {
+public class PgmImage implements Cloneable {
 
-    public static final Charset CHARSET = Charset.forName("iso8859-1");
+    public static final int MAX_VALUE = 65536;
 
-    private final String path;
-    private final int[][] pixels;
+    private String magicNumber;
+    private String comment;
+    private int[][] pixels;
 
-    private final String magicNumber;
-    private final String comment;
-    private final int width;
-    private final int height;
-    private final int maxValue;
-
-    public PgmImage(String path) throws IOException {
-        this.path = path;
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), CHARSET))) {
-
-            this.magicNumber = reader.readLine().trim();
-            this.comment = reader.readLine().trim();
-
-            StringTokenizer widthAndHeight = new StringTokenizer(reader.readLine().trim());
-            this.width = Integer.parseInt(widthAndHeight.nextToken());
-            this.height = Integer.parseInt(widthAndHeight.nextToken());
-
-            this.maxValue = Integer.parseInt(reader.readLine().trim());
-
-            this.pixels = getPixels(reader);
-
-        }
+    protected PgmImage() {
     }
 
-    private int[][] getPixels(BufferedReader reader) throws IOException {
+    public String getComment() {
+        return comment;
+    }
 
-        int[][] pixels = new int[height][width];
+    protected void setComment(String comment) {
+        this.comment = comment;
+    }
 
-        for (int i=0; i<(width*height); ) {
-            StringTokenizer values = new StringTokenizer(reader.readLine().trim());
+    public int getHeight() {
+        return pixels.length;
+    }
 
-            while (values.hasMoreTokens()) {
-                pixels[i/width][i%width] = Integer.parseInt(values.nextToken());
-                i++;
-            }
-        }
+    public String getMagicNumber() {
+        return magicNumber;
+    }
 
+    protected void setMagicNumber(String magicNumber) {
+        this.magicNumber = magicNumber;
+    }
+
+    public int getMaxValue() {
+        return findLargest(pixels);
+    }
+
+    public int[][] getPixels() {
         return pixels;
     }
 
-    public void write(String outputFile) throws IOException {
+    protected void setPixels(int[][] pixels) {
+        this.pixels = pixels;
+    }
 
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), CHARSET))) {
-            writer.write(magicNumber + "\n");
-            writer.write(comment + "\n");
-            writer.write(width + " " + height + "\n");
-            writer.write(findLargest(pixels) + "\n");
-
-            for (int[] row : this.pixels) {
-                for (int pixel : row) {
-                    writer.write(String.valueOf(pixel) + " ");
-                }
-                writer.write("\n");
-            }
-        }
-
+    public int getWidth() {
+        return pixels[0].length;
     }
 
     private int findLargest(int[][] pixels) {
@@ -94,6 +61,22 @@ public class PgmImage {
         }
 
         return largest;
+    }
+
+    @Override
+    public PgmImage clone() {
+
+        PgmImage clone = new PgmImage();
+
+        clone.magicNumber = this.magicNumber;
+        clone.comment = this.comment;
+
+        clone.pixels = new int[this.getHeight()][this.getWidth()];
+        for (int row=0; row<this.pixels.length; row++) {
+            clone.pixels[row] = Arrays.copyOf(this.pixels[row], this.pixels[row].length);
+        }
+
+        return clone;
     }
 
 }

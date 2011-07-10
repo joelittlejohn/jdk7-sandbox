@@ -1,23 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
 import java.io.IOException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 
 public class PgmImageTest {
 
     @Test
-    public void readPgmFile() throws IOException {
-        PgmImage image = new PgmImage("/home/joe/Desktop/test.pgm");
-        image.write("/home/joe/Desktop/test2.pgm");
+    public void pixelArrayDecidesWidthHeightAndMax() throws IOException {
+
+        PgmImage image = new PgmImage();
+        image.setPixels(new int[][] {
+            { 1, 2, 3, 4, 5, 6, 7 },
+            { 3, 4, 5, 6, 7, 8, 9 }
+        });
+
+        assertThat(image.getWidth(), is(7));
+        assertThat(image.getHeight(), is(2));
+        assertThat(image.getMaxValue(), is(9));
+
     }
 
 }
