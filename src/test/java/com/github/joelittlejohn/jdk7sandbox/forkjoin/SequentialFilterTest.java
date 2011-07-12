@@ -4,20 +4,14 @@ import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
 import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmWriter;
 import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmReader;
 import java.io.IOException;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SequentialFilterTest {
 
-    private static PgmImage original;
-
-    @BeforeClass
-    public static void readImage() throws IOException {
-        original = new PgmReader().read("src/main/resources/hdrweir.pgm");
-    }
-
     @Test
     public void filterProducesBlurredImage() throws IOException {
+
+        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
@@ -27,12 +21,14 @@ public class SequentialFilterTest {
 
         System.out.println("Sequential (Blur): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(blurred, "src/main/resources/hdrweir_blurred.pgm");
+        new PgmWriter().write(blurred, "target/hdrweir_blurred.pgm");
 
     }
 
     @Test
     public void filterProducesUniformNoiseImage() throws IOException {
+
+        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
@@ -42,12 +38,14 @@ public class SequentialFilterTest {
 
         System.out.println("Sequential (Uniform Noise): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(uniformNoise, "src/main/resources/hdrweir_uniform_noise.pgm");
+        new PgmWriter().write(uniformNoise, "target/hdrweir_uniform_noise.pgm");
 
     }
 
     @Test
     public void filterProducesRandomNoiseImage() throws IOException {
+
+        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
@@ -57,7 +55,7 @@ public class SequentialFilterTest {
 
         System.out.println("Sequential (Random Noise): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(randomNoise, "src/main/resources/hdrweir_random_noise.pgm");
+        new PgmWriter().write(randomNoise, "target/hdrweir_random_noise.pgm");
 
     }
 
