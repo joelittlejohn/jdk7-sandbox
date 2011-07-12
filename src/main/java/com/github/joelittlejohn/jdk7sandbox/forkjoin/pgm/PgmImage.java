@@ -1,5 +1,8 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm;
 
+import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.image.*;
 import java.util.Arrays;
 import java.util.Observable;
 
@@ -79,6 +82,26 @@ public class PgmImage extends Observable implements Cloneable {
 
         return clone;
     }
+
+    public BufferedImage getBufferedImage() {
+
+        byte[] data = new byte[this.getHeight()*this.getWidth()];
+
+        for (int i = 0; i < this.getHeight(); i++) {
+            for (int j = 0; j < this.getWidth(); j++) {
+                data[(i * this.getWidth()) + j] = (byte) this.getPixels()[i][j];
+            }
+        }
+
+        ColorModel cm = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {8}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+        SampleModel sm = cm.createCompatibleSampleModel(this.getWidth(), this.getHeight());
+        DataBufferByte db = new DataBufferByte(data, this.getWidth() * this.getHeight());
+        WritableRaster raster = Raster.createWritableRaster(sm, db, null);
+        BufferedImage result = new BufferedImage(cm, raster, true, null);
+
+        return result;
+    }
+
 
     @Override
     public void notifyObservers() {

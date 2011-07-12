@@ -1,6 +1,7 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
 import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
+import static com.github.joelittlejohn.jdk7sandbox.forkjoin.ThreadUtils.*;
 
 public class SequentialFilter implements Filter {
 
@@ -20,6 +21,8 @@ public class SequentialFilter implements Filter {
                 original.getPixels()[row][col] = this.transform.apply(row, col, original);
             }
             original.notifyObservers();
+
+            sleep(5);
         }
 
         return original;

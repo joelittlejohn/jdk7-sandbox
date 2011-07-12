@@ -5,8 +5,10 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
 import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+import static com.github.joelittlejohn.jdk7sandbox.forkjoin.ThreadUtils.*;
 
 public class ParallelFilter implements Filter {
 
@@ -22,8 +24,7 @@ public class ParallelFilter implements Filter {
         final PgmImage filtered = original.clone();
 
         final ApplyTransform parallelizableAction = new ApplyTransform(transform, original, filtered, 0, original.getHeight());
-        threadPool.execute(parallelizableAction);
-        parallelizableAction.join();
+        threadPool.invoke(parallelizableAction);
 
         return filtered;
     }
@@ -48,8 +49,11 @@ public class ParallelFilter implements Filter {
         protected void compute() {
             if (rowsToProcess > 50) {
 
-                invokeAll(new ApplyTransform(transform, original, filtered, startRow, rowsToProcess/2),
-                        new ApplyTransform(transform, original, filtered, startRow + (rowsToProcess/2), rowsToProcess - (rowsToProcess/2)));
+            invokeAll(new ApplyTransform(transform, original, filtered, startRow, rowsToProcess/2),
+                    new ApplyTransform(transform, original, filtered, startRow + (rowsToProcess/2), rowsToProcess - (rowsToProcess/2)));
+
+//                    invokeAll(new ApplyTransform(transform, original, filtered, startRow + (rowsToProcess/2), rowsToProcess - (rowsToProcess/2)),
+//                            new ApplyTransform(transform, original, filtered, startRow, rowsToProcess/2));
 
             } else {
 
@@ -60,14 +64,11 @@ public class ParallelFilter implements Filter {
 
                     original.notifyObservers();
 
-                    try {
-                        Thread.sleep((long)(Math.random()*50));
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    sleep(10);
                 }
 
             }
         }
+
     }
 }
