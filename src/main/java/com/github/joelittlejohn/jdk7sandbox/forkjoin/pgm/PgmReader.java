@@ -1,4 +1,4 @@
-package com.github.joelittlejohn.jdk7sandbox.forkjoin;
+package com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

@@ -4,6 +4,8 @@
  */
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
+import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
+
 public class Average implements PixelTransform {
 
     @Override

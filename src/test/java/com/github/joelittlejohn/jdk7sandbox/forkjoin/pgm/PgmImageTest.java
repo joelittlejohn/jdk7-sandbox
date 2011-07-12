@@ -1,5 +1,6 @@
-package com.github.joelittlejohn.jdk7sandbox.forkjoin;
+package com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm;
 
+import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
 import java.io.IOException;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -1,5 +1,6 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
+import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
 import static java.lang.Math.*;
 
 public class UniformNoise implements PixelTransform {
@@ -18,7 +19,7 @@ public class UniformNoise implements PixelTransform {
     }
 
     private int applyToPixel(int original, int horizontalNoise, int verticalNoise, int radialNoise) {
-        return (original*1000 + horizontalNoise + verticalNoise + radialNoise) / 1003;
+        return (original*7 + horizontalNoise + verticalNoise + radialNoise) / 10;
     }
 
 }

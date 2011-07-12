@@ -4,6 +4,7 @@
  */
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
+import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
@@ -54,7 +55,15 @@ public class ParallelFilter implements Filter {
 
                 for (int row = startRow; row < startRow + rowsToProcess; row++) {
                     for (int col = 0; col < original.getWidth(); col++) {
-                        filtered.getPixels()[row][col] = transform.apply(row, col, original);
+                        original.getPixels()[row][col] = transform.apply(row, col, original);
+                    }
+
+                    original.notifyObservers();
+
+                    try {
+                        Thread.sleep((long)(Math.random()*50));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                 }
 

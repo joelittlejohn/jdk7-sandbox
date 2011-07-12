@@ -1,5 +1,7 @@
 package com.github.joelittlejohn.jdk7sandbox.forkjoin;
 
+import com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm.PgmImage;
+
 public class RandomNoise implements PixelTransform {
 
     @Override
@@ -12,7 +14,7 @@ public class RandomNoise implements PixelTransform {
     }
 
     private int applyToPixel(int original, int noise) {
-        return (original*500 + noise) / 501;
+        return (original*5 + noise) / 6;
     }
 
 }

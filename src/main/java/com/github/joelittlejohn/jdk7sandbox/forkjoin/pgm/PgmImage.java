@@ -1,10 +1,11 @@
-package com.github.joelittlejohn.jdk7sandbox.forkjoin;
+package com.github.joelittlejohn.jdk7sandbox.forkjoin.pgm;
 
 import java.util.Arrays;
+import java.util.Observable;
 
-public class PgmImage implements Cloneable {
+public class PgmImage extends Observable implements Cloneable {
 
-    public static final int MAX_VALUE = 65536;
+    public static final int MAX_VALUE = 255;
 
     private String magicNumber;
     private String comment;
@@ -77,6 +78,12 @@ public class PgmImage implements Cloneable {
         }
 
         return clone;
+    }
+
+    @Override
+    public void notifyObservers() {
+        setChanged();
+        super.notifyObservers();
     }
 
 }
