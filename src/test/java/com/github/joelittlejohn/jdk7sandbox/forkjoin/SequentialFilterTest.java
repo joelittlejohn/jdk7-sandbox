@@ -11,51 +11,51 @@ public class SequentialFilterTest {
     @Test
     public void filterProducesBlurredImage() throws IOException {
 
-        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
+        final PgmImage image = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
-        final PgmImage blurred = new SequentialFilter(new Average()).apply(original);
+        new SequentialFilter(new Average()).apply(image);
 
         long end = System.currentTimeMillis();
 
         System.out.println("Sequential (Blur): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(blurred, "target/hdrweir_blurred.pgm");
+        new PgmWriter().write(image, "target/hdrweir_blurred.pgm");
 
     }
 
     @Test
     public void filterProducesUniformNoiseImage() throws IOException {
 
-        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
+        final PgmImage image = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
-        final PgmImage uniformNoise = new SequentialFilter(new UniformNoise()).apply(original);
+        new SequentialFilter(new UniformNoise()).apply(image);
 
         long end = System.currentTimeMillis();
 
         System.out.println("Sequential (Uniform Noise): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(uniformNoise, "target/hdrweir_uniform_noise.pgm");
+        new PgmWriter().write(image, "target/hdrweir_uniform_noise.pgm");
 
     }
 
     @Test
     public void filterProducesRandomNoiseImage() throws IOException {
 
-        final PgmImage original = new PgmReader().read("src/main/resources/hdrweir.pgm");
+        final PgmImage image = new PgmReader().read("src/main/resources/hdrweir.pgm");
 
         long start = System.currentTimeMillis();
 
-        final PgmImage randomNoise = new SequentialFilter(new RandomNoise()).apply(original);
+        new SequentialFilter(new RandomNoise()).apply(image);
 
         long end = System.currentTimeMillis();
 
         System.out.println("Sequential (Random Noise): " + (end-start)/1000d + " secs");
 
-        new PgmWriter().write(randomNoise, "target/hdrweir_random_noise.pgm");
+        new PgmWriter().write(image, "target/hdrweir_random_noise.pgm");
 
     }
 

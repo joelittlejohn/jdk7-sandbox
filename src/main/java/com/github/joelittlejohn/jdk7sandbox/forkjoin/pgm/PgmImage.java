@@ -6,16 +6,19 @@ import java.awt.image.*;
 import java.util.Arrays;
 import java.util.Observable;
 
+/**
+ * An 8-bit Portable Gray Map image.
+ */
 public class PgmImage extends Observable implements Cloneable {
 
+    /**
+     * The maximum supported gray value for PGM images.
+     */
     public static final int MAX_VALUE = 255;
 
     private String magicNumber;
     private String comment;
     private int[][] pixels;
-
-    protected PgmImage() {
-    }
 
     public String getComment() {
         return comment;
@@ -53,6 +56,12 @@ public class PgmImage extends Observable implements Cloneable {
         return pixels[0].length;
     }
 
+    /**
+     * Find the largest gray value in the pixel array for this image (required when writing PGMs).
+     *
+     * @param pixels the image pixel gray values
+     * @return the largest int in the given 2D array
+     */
     private int findLargest(int[][] pixels) {
 
         int largest = 0;
@@ -83,6 +92,11 @@ public class PgmImage extends Observable implements Cloneable {
         return clone;
     }
 
+    /**
+     * Creates a {@link BufferedImage} from the pixel information held by this object.
+     *
+     * @return a {@link BufferedImage} representation of this image
+     */
     public BufferedImage getBufferedImage() {
 
         byte[] data = new byte[this.getHeight()*this.getWidth()];
@@ -103,6 +117,9 @@ public class PgmImage extends Observable implements Cloneable {
     }
 
 
+    /**
+     * Notify observers that the pixels of this image have changed.
+     */
     @Override
     public void notifyObservers() {
         setChanged();
